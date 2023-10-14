@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using UserSettingsSharedProject.Models;
+using UserSettingsShareProject.Models;
 
 namespace UserSettingsSharedProject.ViewModels
 {

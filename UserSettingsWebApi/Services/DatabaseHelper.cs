@@ -4,7 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
-using UserSettingsSharedProject.Models;
+using UserSettingsShareProject.Models;
 using UserSettingsWebApi.Helpers.Enums;
 
 namespace UserSettingsWebApi.Services

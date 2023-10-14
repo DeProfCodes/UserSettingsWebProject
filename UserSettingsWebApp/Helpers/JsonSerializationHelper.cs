@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text.Json;
-using UserSettingsSharedProject.Models;
+using UserSettingsShareProject.Models;
 using UserSettingsShareProject.ViewModels;
 
 namespace UserSettingsWebApp.Helpers

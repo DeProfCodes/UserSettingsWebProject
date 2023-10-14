@@ -19,5 +19,7 @@ namespace UserSettingsShareProject.ViewModels
         public string TickerTimeout { get; set; }
 
         public string SyncTimeout { get; set; }
+
+        public string CreateOrUpdateCommand { get; set; }
     }
 }

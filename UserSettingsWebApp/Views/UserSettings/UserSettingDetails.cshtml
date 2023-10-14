@@ -1,4 +1,4 @@
-﻿@model UserSettingsSharedProject.Models.UserSetting;
+﻿@model UserSettingsShareProject.Models.UserSetting;
 
 <div class="text-center">
     <p class="headingText">User Settings Details</p>
@@ -14,7 +14,7 @@
             <tr>
                 <td class="font-weight-bold">Screensaver Timeout (Seconds)</td>
                 <td><input type="number" class="user-details-form-inputs" id="screenSaverTimeout" value="@Model.ScreenSaverTimeout" /></td>
-                <td><p class="text-danger userSetting-Validation" id="screenSaverError"></p></td>
+                <td><p class="text-danger userSetting-Validation" id="screenSaverTimeoutError"></p></td>
             </tr>
             <tr>
                 <td class="font-weight-bold">Pop-Up Timeout (Seconds)</td>
@@ -39,26 +39,47 @@
         </table>
     </div>
     <div class="text-center" style="margin-top:20px;margin-bottom:20px;">
-        <button class="btn btn-secondary action-btn" onclick="Save()">Save</button>
-        <button class="btn btn-secondary action-btn" style="margin-left:10px;margin-right:10px">Delete</button>
+        <button class="btn btn-secondary action-btn" onclick="CreateOrUpdate()">Save</button>
+        <button class="btn btn-secondary action-btn" style="margin-left:10px;margin-right:10px" id="deleteBtn" onclick="Delete()">Delete</button>
         <button class="btn btn-secondary action-btn" onclick="ClearInputFields()">Clear</button>
     </div>
 </div>
 
 <script>
 
+    $(document).ready(function() 
+    {
+        $("#UserDetailsLoader").hide();
+        if('@Model.Id' == '0')
+        {
+            $("#deleteBtn").hide();
+        }
+    });
+
     function ClearInputFields()
     {
         $("#settingDescription").val("");
-        $("#screensaverTimeout").val("");
+        $("#screenSaver").val("");
         $("#popupTimeout").val("");
         $("#desktopTimeout").val("");
         $("#tickerTimeout").val("");
         $("#syncTimeout").val("");
     }
 
-    function Save()
+    function ClearErrorTexts()
     {
+        $("#settingDescriptionError").text("");
+        $("#screenSaverTimeoutError").text("");
+        $("#popupTimeoutError").text("");
+        $("#desktopTimeoutError").text("");
+        $("#tickerTimeoutError").text("");
+        $("#syncTimeoutError").text("");
+    }
+
+    function CreateOrUpdate()
+    {
+        ClearErrorTexts();
+
         var settingsDescription = $("#settingDescription").val();
         var screenSaverTimeout = $("#screenSaverTimeout").val();
         var popupTimeout = $("#popupTimeout").val();
@@ -66,6 +87,55 @@
         var tickerTimeout = $("#tickerTimeout").val();
         var syncTimeout = $("#syncTimeout").val();
 
+        var allFieldsValid = AllFieldsValid(settingsDescription, screenSaverTimeout, popupTimeout, desktopTimeout, tickerTimeout, syncTimeout);
+        
+        if (!allFieldsValid)
+            return;
+        
+        var id = '@Model.Id';
+
+        var jsonObj = {
+            Id: id,
+            SettingDescription: settingsDescription,
+            ScreenSaverTimeout: screenSaverTimeout,
+            PopupTimeout: popupTimeout,
+            DesktopTimeout: desktopTimeout,
+            TickerTimeout: tickerTimeout,
+            SyncTimeout: syncTimeout,
+        };
+
+        var payload = JSON.stringify(jsonObj);
+
+        var url = "";
+        var method = "";
+
+        if(id == 0)
+        {
+            url = '@Url.Action("CreateUserSettingDetails", "UserSettings")' + "?payload=" + payload;
+            method = "POST";
+        }
+        else
+        {
+            url = '@Url.Action("UpdateUserSettingDetails", "UserSettings")' + "?payload=" + payload;
+            method = "PUT";
+        }
+
+        var successUrl = '@Url.Action("Index", "UserSettings")';
+
+        LoadWithSpinner(url, "", "#UserDetailsLoader", method, successUrl);
+
+    }
+
+    function Delete()
+    {
+        var url = '@Url.Action("DeleteUserSetting", "UserSettings")' + "?id=@Model.Id";
+        var successUrl = '@Url.Action("Index", "UserSettings")';
+
+        LoadWithSpinner(url, "", "#UserDetailsLoader", "DELETE", successUrl);
+    }
+
+    function AllFieldsValid(settingsDescription, screenSaverTimeout, popupTimeout, desktopTimeout, tickerTimeout, syncTimeout)
+    {
         var hasErrors = false;
         if (!IsValidateInput("Setting Description", settingsDescription, "#settingDescriptionError")) 
         {
@@ -91,28 +161,7 @@
         {
             hasErrors = true;
         }
-
-        console.log(hasErrors);
-        console.log(tickerTimeout);
-        if (hasErrors)
-            return;
-        
-        var jsonObj = {
-            Id: '@Model.Id',
-            SettingDescription: settingsDescription,
-            ScreenSaverTimeout: screenSaverTimeout,
-            PopupTimeout: popupTimeout,
-            DesktopTimeout: desktopTimeout,
-            TickerTimeout: tickerTimeout,
-            SyncTimeout: syncTimeout,
-        };
-
-        var payload = JSON.stringify(jsonObj);
-        var url = '@Url.Action("UpdateUserSettingDetails", "UserSettings")' + "?payload=" + payload;
-        var successUrl = '@Url.Action("Index", "UserSettings")';
-
-        LoadWithSpinner(url, "", "#UserDetailsLoader", "PUT", successUrl);
-
+        return !hasErrors;
     }
 
     function IsValidateInput(inputFieldName, inputFieldValue, inputFieldErrorField)
@@ -120,9 +169,16 @@
         if(inputFieldValue == null || inputFieldValue == "")
         {
             var errorMessage = inputFieldName + " cannot be empty!";
-            $(inputFieldErrorField).val(errorMessage);
+            $(inputFieldErrorField).text(errorMessage);
 
-            return true;
+            return false;
+        }
+        else if(inputFieldValue != null && inputFieldName != "Setting Description" && inputFieldValue.length > 0 && inputFieldValue[0] == '-')
+        {
+            var errorMessage = inputFieldName + " cannot be negative number";
+            $(inputFieldErrorField).text(errorMessage);
+
+            return false;
         }
         return true;
     }

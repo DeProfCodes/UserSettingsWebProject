@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Web.Http;
 using UserSettingsWebApi.Services;
 using Swashbuckle.Swagger.Annotations;
-using UserSettingsSharedProject.Models;
+using UserSettingsShareProject.Models;
 
 namespace UserSettingsWebApi.Controllers
 {
@@ -103,7 +103,7 @@ namespace UserSettingsWebApi.Controllers
         }
 
         /// <summary>
-        /// Insert new user settings 
+        /// Update user settings 
         /// </summary>
         /// <param name="payload">JSON payload with all fields</param>
         /// <returns>Error or success message</returns>

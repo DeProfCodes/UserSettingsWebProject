@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using UserSettingsSharedProject.Models;
+using UserSettingsShareProject.Models;
 
 namespace UserSettingsWebApp.Services
 {

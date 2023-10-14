@@ -23,7 +23,7 @@
             <tbody class="text-center" style="background: white;">
                 @foreach(var setting in Model.AllUserSettings)
                 {
-                    <tr id="@setting.Id" class="userSettingRow" onclick="LoadUserSettingDetails('@setting.Id')">
+                    <tr id="@setting.Id" class="userSettingRow" onclick="OpenUserSettingDetails('@setting.Id')">
                         <td>@setting.SettingDescription</td>
                         <td>@setting.ScreenSaverTimeout</td>
                         <td>@setting.PopupTimeout</td>
@@ -36,7 +36,7 @@
         </table>
     </div>
     <div class="text-center" style="margin-top:20px;margin-bottom:20px;">
-        <button class="btn btn-secondary action-btn">New User Setting</button>
+        <button class="btn btn-secondary action-btn" onclick="OpenUserSettingDetails('0')">New User Setting</button>
     </div>
 </div>
 
@@ -56,7 +56,7 @@
         $("#UserDetailsLoader").hide();
     });
 
-    function LoadUserSettingDetails(id)
+    function OpenUserSettingDetails(id)
     {
         url = '@Url.Action("UserSettingDetails", "UserSettings")' + "?id=" + id;
 
