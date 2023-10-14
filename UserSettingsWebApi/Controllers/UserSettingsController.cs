@@ -81,12 +81,11 @@ namespace UserSettingsWebApi.Controllers
         /// <returns>Error or success message</returns>
         [HttpPost]
         [Route("api/createUserSetting")]
-        public IHttpActionResult CreateUserSetting(string payload)
+        public IHttpActionResult CreateUserSetting(UserSetting userSetting)
         {
             try
             {
-                var userSettings = JsonSerializer.Deserialize<UserSetting>(payload);
-                bool success = dbHelper.CreateUserSetting(userSettings);
+                bool success = dbHelper.CreateUserSetting(userSetting);
 
                 if (success)
                 {
@@ -110,40 +109,10 @@ namespace UserSettingsWebApi.Controllers
         /// <returns>Error or success message</returns>
         [HttpPut]
         [Route("api/updateUserSetting")]
-        public IHttpActionResult UpdateUserSetting(string payload)
+        public IHttpActionResult UpdateUserSetting(UserSetting userSettings)
         {
             try
             {
-                var userSettings = JsonSerializer.Deserialize<UserSetting>(payload);
-                bool success = dbHelper.UpdateUserSetting(userSettings);
-
-                if (success)
-                {
-                    return Ok("User setting was updated successfully");
-                }
-                else
-                {
-                    return BadRequest("Something went wrong while attempting to update user setting");
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Insert new user settings 
-        /// </summary>
-        /// <param name="payload">JSON payload with all fields</param>
-        /// <returns>Error or success message</returns>
-        [HttpPut]
-        [Route("api/updateUserSetting2")]
-        public IHttpActionResult UpdateUserSetting2(UserSetting userSettings)
-        {
-            try
-            {
-                //var userSettings = JsonSerializer.Deserialize<UserSetting>(payload);
                 bool success = dbHelper.UpdateUserSetting(userSettings);
 
                 if (success)

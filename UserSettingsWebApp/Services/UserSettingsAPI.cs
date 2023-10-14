@@ -5,7 +5,9 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using UserSettingsSharedProject.Models;
+using UserSettingsShareProject.Helpers.Constants;
 using UserSettingsShareProject.ViewModels;
+using UserSettingsWebApp.Helpers;
 
 namespace UserSettingsWebApp.Services
 {
@@ -16,12 +18,12 @@ namespace UserSettingsWebApp.Services
         public UserSettingsAPI()
         {
             client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44359/api/");
+            client.BaseAddress = new Uri(UserSettingAPIRoutes.API_BASE_ADDRESS);
         }
 
         public async Task<List<UserSetting>> GetAllUserSettings()
         {
-            var result = await client.GetAsync("getAllUserSettings");
+            var result = await client.GetAsync(UserSettingAPIRoutes.GET_ALL_USER_SETTINGS);
             
             if (result.IsSuccessStatusCode)
             {
@@ -40,7 +42,7 @@ namespace UserSettingsWebApp.Services
 
         public async Task<UserSetting> GetUserSetting(int userSettingId)
         {
-            var url = $"getUserSettingById?id={userSettingId}";
+            var url = $"{UserSettingAPIRoutes.GET_USER_SETTING_BY_ID}?id={userSettingId}";
 
             var result = await client.GetAsync(url);
             
@@ -56,34 +58,26 @@ namespace UserSettingsWebApp.Services
             }
         }
 
-        public async Task<string> CreateUserSetting(string payload)
+        public async Task<string> CreateUserSetting(string payloadFromClient)
         {
-            var url = $"createUserSetting?payload={payload}";
+            var payloadJson = JsonSerializationHelper.GetJsonPayloadForApiCall(payloadFromClient);
 
-            var result = await client.GetAsync(url);
+            var httpContent = new StringContent(payloadJson, Encoding.UTF8, "application/json");
+
+            var result = await client.PutAsync(UserSettingAPIRoutes.CREATE_USER_SETTING, httpContent);
+
             var message = await result.Content.ReadAsAsync<string>();
-            
+
             return message;
         }
 
-        public async Task<string> UpdateUserSetting(string payload)
+        public async Task<string> UpdateUserSetting(string payloadFromClient)
         {
-            var url = $"updateUserSetting?payload={payload}";
+            var payloadJson = JsonSerializationHelper.GetJsonPayloadForApiCall(payloadFromClient);
 
-            var userSettingVm = JsonSerializer.Deserialize<UserSettingViewModel>(payload);
-            var userSetting = new UserSetting
-            {
-                Id = Convert.ToInt32(userSettingVm.Id),
-                SettingDescription = userSettingVm.SettingDescription,
-                DesktopTimeout = Convert.ToInt64(userSettingVm.DesktopTimeout),
-                TickerTimeout = Convert.ToInt64(userSettingVm.TickerTimeout),
-                SyncTimeout = Convert.ToInt64(userSettingVm.SyncTimeout),
-                ScreenSaverTimeout = Convert.ToInt64(userSettingVm.ScreenSaverTimeout),
-                PopupTimeout = Convert.ToInt64(userSettingVm.PopupTimeout),
-            };
+            var httpContent = new StringContent(payloadJson, Encoding.UTF8, "application/json");
 
-            var result = await client.GetAsync(url);
-            result = await client.PutAsJsonAsync(url, userSetting);
+            var result = await client.PutAsync(UserSettingAPIRoutes.UPDATE_USER_SETTING, httpContent);
 
             var message = await result.Content.ReadAsAsync<string>();
 
@@ -92,9 +86,9 @@ namespace UserSettingsWebApp.Services
 
         public async Task<string> DeleteUserSetting(int userSettingId)
         {
-            var url = $"deleteUserSettingBy?id={userSettingId}";
+            var url = $"{UserSettingAPIRoutes.DELETE_USER_SETTING}?id={userSettingId}";
 
-            var result = await client.GetAsync(url);
+            var result = await client.DeleteAsync(url);
             var message = await result.Content.ReadAsAsync<string>();
 
             return message;
