@@ -1,0 +1,66 @@
+﻿@model UserSettingsSharedProject.ViewModels.UserSettingsViewModel;
+
+@{
+    ViewData["Title"] = "Manage User Settings";
+}
+
+<div style="border: 1px solid silver;">
+    <div class="text-center">
+        <p class="headingText" style="margin-top:-15px">Existing User Settings</p>
+    </div>
+    <div id="AllUserSettingsContainer">
+        <table class="table table-bordered" id="AllUserSettingsTable">
+            <thead style="background: whitesmoke;">
+                <tr>
+                    <th class="font-weight-normal">Description</th>
+                    <th class="font-weight-normal">Screensaver Timeout</th>
+                    <th class="font-weight-normal">PopUp Timeout</th>
+                    <th class="font-weight-normal">Desktop Timeout</th>
+                    <th class="font-weight-normal">Ticker Timeout</th>
+                    <th class="font-weight-normal">Sync Timeout</th>
+                </tr>
+            </thead>
+            <tbody class="text-center" style="background: white;">
+                @foreach(var setting in Model.AllUserSettings)
+                {
+                    <tr id="@setting.Id" class="userSettingRow" onclick="LoadUserSettingDetails('@setting.Id')">
+                        <td>@setting.SettingDescription</td>
+                        <td>@setting.ScreenSaverTimeout</td>
+                        <td>@setting.PopupTimeout</td>
+                        <td>@setting.DesktopTimeout</td>
+                        <td>@setting.TickerTimeout</td>
+                        <td>@setting.SyncTimeout</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center" style="margin-top:20px;margin-bottom:20px;">
+        <button class="btn btn-secondary action-btn">New User Setting</button>
+    </div>
+</div>
+
+<div id="UserSettingsDetailsContainer" style="margin-top:10px">
+    
+</div>
+
+<div class="loader" id="UserDetailsLoader" style="position: fixed;top: 230px;left: 45%;"></div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+    $(document).ready(function() 
+    {
+        $("#UserDetailsLoader").hide();
+    });
+
+    function LoadUserSettingDetails(id)
+    {
+        url = '@Url.Action("UserSettingDetails", "UserSettings")' + "?id=" + id;
+
+        LoadWithSpinner(url, "#UserSettingsDetailsContainer", "#UserDetailsLoader", "GET");
+    }
+
+</script>

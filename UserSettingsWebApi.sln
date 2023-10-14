@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserSettingsWebApi", "UserSettingsWebApi\UserSettingsWebApi.csproj", "{38E09EF1-7C02-4A11-92FA-0F3A11AA7F09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserSettingsWebApp", "UserSettingsWebApp\UserSettingsWebApp.csproj", "{ADEF1B59-2FFB-46B4-9CD5-69D925E0974D}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UserSettingsShareProject", "UserSettingsShareProject\UserSettingsShareProject.shproj", "{74BA0F4B-DD1A-4997-8E9F-EDCFDD055F4F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{38E09EF1-7C02-4A11-92FA-0F3A11AA7F09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38E09EF1-7C02-4A11-92FA-0F3A11AA7F09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38E09EF1-7C02-4A11-92FA-0F3A11AA7F09}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{38E09EF1-7C02-4A11-92FA-0F3A11AA7F09}.Debug|x86.Build.0 = Debug|Any CPU
+		{38E09EF1-7C02-4A11-92FA-0F3A11AA7F09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38E09EF1-7C02-4A11-92FA-0F3A11AA7F09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38E09EF1-7C02-4A11-92FA-0F3A11AA7F09}.Release|x86.ActiveCfg = Release|Any CPU
+		{38E09EF1-7C02-4A11-92FA-0F3A11AA7F09}.Release|x86.Build.0 = Release|Any CPU
+		{ADEF1B59-2FFB-46B4-9CD5-69D925E0974D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADEF1B59-2FFB-46B4-9CD5-69D925E0974D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADEF1B59-2FFB-46B4-9CD5-69D925E0974D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ADEF1B59-2FFB-46B4-9CD5-69D925E0974D}.Debug|x86.Build.0 = Debug|Any CPU
+		{ADEF1B59-2FFB-46B4-9CD5-69D925E0974D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADEF1B59-2FFB-46B4-9CD5-69D925E0974D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADEF1B59-2FFB-46B4-9CD5-69D925E0974D}.Release|x86.ActiveCfg = Release|Any CPU
+		{ADEF1B59-2FFB-46B4-9CD5-69D925E0974D}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D87DB788-A34B-4428-BAD2-1E8759085345}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		UserSettingsShareProject\UserSettingsShareProject.projitems*{38e09ef1-7c02-4a11-92fa-0f3a11aa7f09}*SharedItemsImports = 4
+		UserSettingsShareProject\UserSettingsShareProject.projitems*{74ba0f4b-dd1a-4997-8e9f-edcfdd055f4f}*SharedItemsImports = 13
+		UserSettingsShareProject\UserSettingsShareProject.projitems*{adef1b59-2ffb-46b4-9cd5-69d925e0974d}*SharedItemsImports = 5
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,130 @@
+﻿@model UserSettingsSharedProject.Models.UserSetting;
+
+<div class="text-center">
+    <p class="headingText">User Settings Details</p>
+</div>
+<div style="border: 1px solid silver;">
+    <div style="padding:30px">
+        <table>
+            <tr>
+                <td class="font-weight-bold">Setting Description</td>
+                <td><input type="text" class="user-details-form-inputs" id="settingDescription" value="@Model.SettingDescription" /></td>
+                <td><p class="text-danger userSetting-Validation" id="settingDescriptionError"></p></td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Screensaver Timeout (Seconds)</td>
+                <td><input type="number" class="user-details-form-inputs" id="screenSaverTimeout" value="@Model.ScreenSaverTimeout" /></td>
+                <td><p class="text-danger userSetting-Validation" id="screenSaverError"></p></td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Pop-Up Timeout (Seconds)</td>
+                <td><input type="number" class="user-details-form-inputs" id="popupTimeout" value="@Model.PopupTimeout" /></td>
+                <td><p class="text-danger userSetting-Validation" id="popupTimeoutError"></p></td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Desktop Timeout (Seconds)</td>
+                <td><input type="number" class="user-details-form-inputs" id="desktopTimeout" value="@Model.DesktopTimeout" /></td>
+                <td><p class="text-danger userSetting-Validation" id="desktopTimeoutError"></p></td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Ticker Timeout (Seconds)</td>
+                <td><input type="number" class="user-details-form-inputs" id="tickerTimeout" value="@Model.TickerTimeout" /></td>
+                <td><p class="text-danger userSetting-Validation" id="tickerTimeoutError"></p></td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Sync Timeout (Seconds)</td>
+                <td><input type="number" class="user-details-form-inputs" id="syncTimeout" value="@Model.SyncTimeout" /></td>
+                <td><p class="text-danger userSetting-Validation" id="syncTimeoutError"></p></td>
+            </tr>
+        </table>
+    </div>
+    <div class="text-center" style="margin-top:20px;margin-bottom:20px;">
+        <button class="btn btn-secondary action-btn" onclick="Save()">Save</button>
+        <button class="btn btn-secondary action-btn" style="margin-left:10px;margin-right:10px">Delete</button>
+        <button class="btn btn-secondary action-btn" onclick="ClearInputFields()">Clear</button>
+    </div>
+</div>
+
+<script>
+
+    function ClearInputFields()
+    {
+        $("#settingDescription").val("");
+        $("#screensaverTimeout").val("");
+        $("#popupTimeout").val("");
+        $("#desktopTimeout").val("");
+        $("#tickerTimeout").val("");
+        $("#syncTimeout").val("");
+    }
+
+    function Save()
+    {
+        var settingsDescription = $("#settingDescription").val();
+        var screenSaverTimeout = $("#screenSaverTimeout").val();
+        var popupTimeout = $("#popupTimeout").val();
+        var desktopTimeout = $("#desktopTimeout").val();
+        var tickerTimeout = $("#tickerTimeout").val();
+        var syncTimeout = $("#syncTimeout").val();
+
+        var hasErrors = false;
+        if (!IsValidateInput("Setting Description", settingsDescription, "#settingDescriptionError")) 
+        {
+            hasErrors = true;
+        }
+        if (!IsValidateInput("Screensaver Timeout", screenSaverTimeout, "#screenSaverTimeoutError")) 
+        {
+            hasErrors = true;
+        }
+        if (!IsValidateInput("PopUp Timeout", popupTimeout, "#popupTimeoutError")) 
+        {
+            hasErrors = true;
+        }
+        if (!IsValidateInput("Desktop Timeout", desktopTimeout, "#desktopTimeoutError")) 
+        {
+            hasErrors = true;
+        }
+        if (!IsValidateInput("Ticker Timeout", tickerTimeout, "#tickerTimeoutError")) 
+        {
+            hasErrors = true;
+        }
+        if (!IsValidateInput("Sync Timeout", syncTimeout, "#syncTimeoutError")) 
+        {
+            hasErrors = true;
+        }
+
+        console.log(hasErrors);
+        console.log(tickerTimeout);
+        if (hasErrors)
+            return;
+        
+        var jsonObj = {
+            Id: '@Model.Id',
+            SettingDescription: settingsDescription,
+            ScreenSaverTimeout: screenSaverTimeout,
+            PopupTimeout: popupTimeout,
+            DesktopTimeout: desktopTimeout,
+            TickerTimeout: tickerTimeout,
+            SyncTimeout: syncTimeout,
+        };
+
+        var payload = JSON.stringify(jsonObj);
+        var url = '@Url.Action("UpdateUserSettingDetails", "UserSettings")' + "?payload=" + payload;
+        var successUrl = '@Url.Action("Index", "UserSettings")';
+
+        LoadWithSpinner(url, "", "#UserDetailsLoader", "PUT", successUrl);
+
+    }
+
+    function IsValidateInput(inputFieldName, inputFieldValue, inputFieldErrorField)
+    {
+        if(inputFieldValue == null || inputFieldValue == "")
+        {
+            var errorMessage = inputFieldName + " cannot be empty!";
+            $(inputFieldErrorField).val(errorMessage);
+
+            return true;
+        }
+        return true;
+    }
+
+</script>
