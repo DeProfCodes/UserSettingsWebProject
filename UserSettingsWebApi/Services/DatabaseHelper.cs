@@ -15,7 +15,7 @@ namespace UserSettingsWebApi.Services
         public DatabaseHelper()
         {
             connectionString = "Server=NTHASSESSMENTS;Database=CLAAssessment;User Id=CLAAssessment_User;Password=fGTy6tn82yvRDbaW;Trusted_Connection=True;Encrypt=False;MultipleActiveResultSets=true";
-            connectionString = "Server=(localdb)\\mssqllocaldb;Database=CLAAssessment;Trusted_Connection=True;MultipleActiveResultSets=true";
+            //connectionString = "Server=(localdb)\\mssqllocaldb;Database=CLAAssessment;Trusted_Connection=True;MultipleActiveResultSets=true";
         }
 
         public List<UserSetting> GetAllUserSettings()
