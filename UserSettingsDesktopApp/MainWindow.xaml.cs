@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -64,7 +65,7 @@ namespace UserSettingsDesktopApp
             }
         }
 
-        private void ClearUserSetting_Click(object sender, RoutedEventArgs e)
+        private void ClearFields()
         {
             settingDescriptionTxt.Text = "";
             screensaverTimeoutTxt.Text = "";
@@ -74,52 +75,78 @@ namespace UserSettingsDesktopApp
             tickerTimeoutTxt.Text = "";
         }
 
+        private void ClearUserSetting_Click(object sender, RoutedEventArgs e)
+        {
+            ClearFields();
+        }
+
         private void DeleteUserSetting_Click(object sender, RoutedEventArgs e)
         {
-            var response = MessageBox.Show("Are you sure you want to delete?", "Deleting",MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
-            if (response == MessageBoxResult.Yes)
+            try
             {
-                if (userSetting != null && userSetting.Id > 0)
+                var response = MessageBox.Show("Are you sure you want to delete?", "Deleting", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                if (response == MessageBoxResult.Yes)
                 {
-                    var status = userSettingsApi.DeleteUserSetting(userSetting.Id);
-                    MessageBox.Show(status);
+                    if (userSetting != null && userSetting.Id > 0)
+                    {
+                        var status = userSettingsApi.DeleteUserSetting(userSetting.Id);
+                        MessageBox.Show(status);
 
-                    ReloadAllUserSettings();
-                    HideUserDetailsView();
+                        ReloadAllUserSettings();
+                        HideUserDetailsView();
+                    }
                 }
+            }
+            catch
+            {
+                MessageBox.Show("Something went wrong", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         private void SaveUserSetting_Click(object sender, RoutedEventArgs e)
         {
-            var titleMsg = (userSetting != null && userSetting.Id > 0) ? "Are you sure you want to update user setting?" : "Are you sure you want to create new user setting?";
-            var title = (userSetting != null && userSetting.Id > 0) ? "Update User" : "Create User";
-            var response = MessageBox.Show(titleMsg, title, MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
-            if (response == MessageBoxResult.Yes)
+            try
             {
-                if (userSetting == null)
-                    userSetting = new UserSetting { Id = 0 };
-
-                userSetting.SettingDescription = settingDescriptionTxt.Text;
-                userSetting.ScreenSaverTimeout = Convert.ToInt64(screensaverTimeoutTxt.Text);
-                userSetting.PopupTimeout = Convert.ToInt64(popupTimeoutTxt.Text);
-                userSetting.DesktopTimeout = Convert.ToInt64(desktopTimeoutTxt.Text);
-                userSetting.SyncTimeout = Convert.ToInt64(syncTimeoutTxt.Text);
-                userSetting.TickerTimeout = Convert.ToInt64(tickerTimeoutTxt.Text);
-
-                var status = "";
-                if (userSetting.Id > 0)
+                var titleMsg = (userSetting != null && userSetting.Id > 0) ? "Are you sure you want to update user setting?" : "Are you sure you want to create new user setting?";
+                var title = (userSetting != null && userSetting.Id > 0) ? "Update User" : "Create User";
+                var response = MessageBox.Show(titleMsg, title, MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                if (response == MessageBoxResult.Yes)
                 {
-                    status = userSettingsApi.UpdateUserSetting(userSetting);
-                }
-                else
-                {
-                    status = userSettingsApi.CreateUserSetting(userSetting);
-                }
-                MessageBox.Show(status);
+                    if (AllFieldsAreValidated())
+                    {
+                        if (userSetting == null)
+                            userSetting = new UserSetting { Id = 0 };
 
-                ReloadAllUserSettings();
-                HideUserDetailsView();
+                        userSetting.SettingDescription = settingDescriptionTxt.Text;
+                        userSetting.ScreenSaverTimeout = Convert.ToInt64(screensaverTimeoutTxt.Text);
+                        userSetting.PopupTimeout = Convert.ToInt64(popupTimeoutTxt.Text);
+                        userSetting.DesktopTimeout = Convert.ToInt64(desktopTimeoutTxt.Text);
+                        userSetting.SyncTimeout = Convert.ToInt64(syncTimeoutTxt.Text);
+                        userSetting.TickerTimeout = Convert.ToInt64(tickerTimeoutTxt.Text);
+
+                        var status = "";
+                        if (userSetting.Id > 0)
+                        {
+                            status = userSettingsApi.UpdateUserSetting(userSetting);
+                        }
+                        else
+                        {
+                            status = userSettingsApi.CreateUserSetting(userSetting);
+                        }
+                        MessageBox.Show(status);
+
+                        ReloadAllUserSettings();
+                        HideUserDetailsView();
+                    }
+                    else
+                    {
+                        MessageBox.Show("All Fields are required, make sure all are filled", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            catch 
+            {
+                MessageBox.Show("Something went wrong", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -138,7 +165,29 @@ namespace UserSettingsDesktopApp
         private void NewUserSetting_Click(object sender, RoutedEventArgs e)
         {
             ShowUserDetailsView();
+            ClearFields();
             userSetting = new();
+        }
+
+        private void InputFields_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            if (textBox != null)
+            {
+                textBox.Text = Regex.Replace(textBox.Text, "[^0-9]+", "");
+            }
+        }
+
+        private bool AllFieldsAreValidated()
+        {
+            if(settingDescriptionTxt.Text == "") return false;
+            if(screensaverTimeoutTxt.Text == "") return false;
+            if(popupTimeoutTxt.Text == "") return false; 
+            if(desktopTimeoutTxt.Text == "") return false; 
+            if(syncTimeoutTxt.Text == "") return false; 
+            if(tickerTimeoutTxt.Text == "") return false;
+
+            return true;
         }
     }
 }

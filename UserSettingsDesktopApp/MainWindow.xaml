@@ -173,7 +173,8 @@
                             Text=""
                             MinWidth="100"
                             FontWeight="Bold"
-                            Margin="10,0,0,5"/>
+                            Margin="10,0,0,5"
+                            TextChanged="InputFields_TextChanged"/>
                         
                         <TextBlock
                             Grid.Row="2"
@@ -187,7 +188,8 @@
                             Text=""
                             MinWidth="100"
                             FontWeight="Bold"
-                            Margin="10,0,0,5"/>
+                            Margin="10,0,0,5"
+                            TextChanged="InputFields_TextChanged"/>
 
                         <TextBlock
                             Grid.Row="3"
@@ -201,7 +203,8 @@
                             Text=""
                             MinWidth="100"
                             FontWeight="Bold"
-                            Margin="10,0,0,5"/>
+                            Margin="10,0,0,5"
+                            TextChanged="InputFields_TextChanged"/>
 
                         <TextBlock
                             Grid.Row="4"
@@ -215,7 +218,8 @@
                             Text=""
                             MinWidth="100"
                             FontWeight="Bold"
-                            Margin="10,0,0,4"/>
+                            Margin="10,0,0,4"
+                            TextChanged="InputFields_TextChanged"/>
 
                         <TextBlock
                             Grid.Row="5"
@@ -229,7 +233,8 @@
                             Text=""
                             MinWidth="100"
                             FontWeight="Bold"
-                            Margin="10,0,0,5"/>
+                            Margin="10,0,0,5"
+                            TextChanged="InputFields_TextChanged"/>
                     </Grid>
                 </StackPanel>
                 <StackPanel
