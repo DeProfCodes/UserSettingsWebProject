@@ -30,6 +30,9 @@ namespace UserSettingsWebApp.Controllers
             try
             {
                 userSettingsViewModel.AllUserSettings = await _userSettingsApi.GetAllUserSettings();
+                
+                if (userSettingsViewModel.AllUserSettings == null)
+                    userSettingsViewModel.AllUserSettings = new();
             }
             catch(Exception ex)
             {

@@ -36,15 +36,23 @@ namespace UserSettingsDesktopApp
             ReloadAllUserSettings();
         }
 
+        /// <summary>
+        /// Query API to load all user settings from database then serve them to DataGrid in main page
+        /// </summary>
         private void ReloadAllUserSettings()
         {
             AllUserSettings = userSettingsApi.GetAllUserSettings();
-            if (AllUserSettings.Count > 0)
+            if (AllUserSettings != null && AllUserSettings.Count > 0)
             {
                 UserSettingsGrid.ItemsSource = AllUserSettings;
             }
         }
 
+        /// <summary>
+        /// DoubleClick Row event handler which then loads up the user setting details of the clicked row
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             UserSettingDetailsHeading.Visibility = Visibility.Visible;
@@ -65,6 +73,9 @@ namespace UserSettingsDesktopApp
             }
         }
 
+        /// <summary>
+        /// Clear textboxes values
+        /// </summary>
         private void ClearFields()
         {
             settingDescriptionTxt.Text = "";
@@ -75,11 +86,21 @@ namespace UserSettingsDesktopApp
             tickerTimeoutTxt.Text = "";
         }
 
+        /// <summary>
+        /// Event handler for Clear button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ClearUserSetting_Click(object sender, RoutedEventArgs e)
         {
             ClearFields();
         }
 
+        /// <summary>
+        /// Event handler for Delete User button, which then deletes user from the database using web api
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DeleteUserSetting_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -103,6 +124,11 @@ namespace UserSettingsDesktopApp
             }
         }
 
+        /// <summary>
+        /// Event handler for creating or updating user setting details
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveUserSetting_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -150,18 +176,29 @@ namespace UserSettingsDesktopApp
             }
         }
 
+        /// <summary>
+        /// Hide User Details Section of the page
+        /// </summary>
         private void HideUserDetailsView()
         {
             UserSettingDetailsHeading.Visibility = Visibility.Hidden;
             UserSettingDetailsBd.Visibility = Visibility.Hidden;
         }
 
+        /// <summary>
+        /// Display User Details Section of the page
+        /// </summary>
         private void ShowUserDetailsView()
         {
             UserSettingDetailsHeading.Visibility = Visibility.Visible;
             UserSettingDetailsBd.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// Event handler for when creating a new user
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NewUserSetting_Click(object sender, RoutedEventArgs e)
         {
             ShowUserDetailsView();
@@ -169,6 +206,11 @@ namespace UserSettingsDesktopApp
             userSetting = new();
         }
 
+        /// <summary>
+        /// Event handler to force the numerical TextBoxes to only accept numerical inputs
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void InputFields_TextChanged(object sender, TextChangedEventArgs e)
         {
             var textBox = sender as TextBox;
@@ -178,6 +220,10 @@ namespace UserSettingsDesktopApp
             }
         }
 
+        /// <summary>
+        /// Validation method which checks if all fields are not empty
+        /// </summary>
+        /// <returns></returns>
         private bool AllFieldsAreValidated()
         {
             if(settingDescriptionTxt.Text == "") return false;
