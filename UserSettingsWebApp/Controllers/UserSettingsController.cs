@@ -83,7 +83,7 @@ namespace UserSettingsWebApp.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"An error occured while retrieving all user settings with payload={payload}, error = {ex.Message}");
+                _logger.LogError($"An error occured while attempting to create a user with payload={payload}, error = {ex.Message}");
 
                 return BadRequest();
             }

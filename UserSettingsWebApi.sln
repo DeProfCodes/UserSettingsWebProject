@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserSettingsWebApp", "UserS
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UserSettingsShareProject", "UserSettingsShareProject\UserSettingsShareProject.shproj", "{74BA0F4B-DD1A-4997-8E9F-EDCFDD055F4F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserSettingsDesktopApp", "UserSettingsDesktopApp\UserSettingsDesktopApp.csproj", "{0CE591D3-03E5-4476-B627-6C69464CFC0D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,14 @@ Global
 		{ADEF1B59-2FFB-46B4-9CD5-69D925E0974D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ADEF1B59-2FFB-46B4-9CD5-69D925E0974D}.Release|x86.ActiveCfg = Release|Any CPU
 		{ADEF1B59-2FFB-46B4-9CD5-69D925E0974D}.Release|x86.Build.0 = Release|Any CPU
+		{0CE591D3-03E5-4476-B627-6C69464CFC0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CE591D3-03E5-4476-B627-6C69464CFC0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CE591D3-03E5-4476-B627-6C69464CFC0D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0CE591D3-03E5-4476-B627-6C69464CFC0D}.Debug|x86.Build.0 = Debug|Any CPU
+		{0CE591D3-03E5-4476-B627-6C69464CFC0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CE591D3-03E5-4476-B627-6C69464CFC0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CE591D3-03E5-4476-B627-6C69464CFC0D}.Release|x86.ActiveCfg = Release|Any CPU
+		{0CE591D3-03E5-4476-B627-6C69464CFC0D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
