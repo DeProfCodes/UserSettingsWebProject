@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UserSettingsDesktopApp"
+        xmlns:custom="clr-namespace:UserSettingsShareProject.Models"
         mc:Ignorable="d"
         Title="MainWindow" Height="750" Width="800"
         Background="Silver">
@@ -59,20 +60,32 @@
                     Background="DimGray"
                     Margin="3,20,3,40">
                     <DataGrid 
-                    AutoGenerateColumns="False" 
-                    Height="220" 
-                    HorizontalAlignment="Left" 
-                    Name="dataGrid1" 
-                    VerticalAlignment="Top"
-                    Width="700">
-                        <DataGrid.Columns >
-                            <DataGridTextColumn Binding="{Binding Path=A}" Width="*" />
-                            <DataGridTextColumn Binding="{Binding Path=B}" Width="*" />
-                            <DataGridTextColumn Binding="{Binding Path=C}" Width="*" />
-                            <DataGridTextColumn Binding="{Binding Path=A}" Width="*" />
-                            <DataGridTextColumn Binding="{Binding Path=B}" Width="*" />
-                            <DataGridTextColumn Binding="{Binding Path=C}" Width="*" />
+                        x:Name="UserSettingsGrid"
+                        AutoGenerateColumns="False" 
+                        Height="220" 
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Width="700"
+                        RowHeight="25">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn 
+                                Header="Description" Binding="{Binding Path=SettingDescription}" Width="*" IsReadOnly="True"/>
+                            <DataGridTextColumn 
+                                Header="Screensaver Timeout" Binding="{Binding Path=ScreenSaverTimeout}" Width="Auto" IsReadOnly="True"/>
+                            <DataGridTextColumn 
+                                Header="Popup Timeout" Binding="{Binding Path=PopupTimeout}" Width="*" IsReadOnly="True"/>
+                            <DataGridTextColumn
+                                Header="Desktop Timeout" Binding="{Binding Path=DesktopTimeout}" Width="*" IsReadOnly="True"/>
+                            <DataGridTextColumn 
+                                Header="Ticker Timeout" Binding="{Binding Path=TickerTimeout}" Width="*" IsReadOnly="True"/>
+                            <DataGridTextColumn
+                                Header="Sync Timeout" Binding="{Binding Path=SyncTimeout}" Width="*" IsReadOnly="True"/>
                         </DataGrid.Columns>
+                        <DataGrid.ItemContainerStyle>
+                            <Style TargetType="DataGridRow">
+                                <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_MouseDoubleClick"/>
+                            </Style>
+                        </DataGrid.ItemContainerStyle>
                     </DataGrid>
                 </StackPanel>
                 <Button 
@@ -80,9 +93,26 @@
                     Content="New User Setting"
                     Width="150"
                     Height="30"
-                    Margin="0,-15,0,0"/>
+                    Margin="0,-15,0,0" Click="NewUserSetting_Click"/>
             </StackPanel>
         </Border>
+        
+        <TextBlock
+            x:Name="UserSettingDetailsHeading"
+            Grid.Row="3"
+            Grid.Column="0"
+            Grid.ColumnSpan="5"
+            Text="User Settings Details"
+            TextAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="15"
+            Background="SlateGray"
+            FontWeight="Bold"
+            Padding="10"
+            Width="200"
+            Margin="0,0,0,0"
+            Visibility="Hidden"
+            />
         <Border
             Name="UserSettingDetailsBd"
             Grid.Row="4"
@@ -92,7 +122,8 @@
             BorderBrush="Black"
             Panel.ZIndex="10" 
             BorderThickness="1" 
-            Margin="20,-15,20,10">
+            Margin="20,10,20,10"
+            Visibility="Hidden">
 
             <StackPanel
                 Orientation="Vertical">
@@ -101,13 +132,13 @@
                     Margin="30,30,3,40">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -118,40 +149,112 @@
                             Grid.Row="0"
                             Grid.Column="0"
                             Text="Settings Description:"
+                            VerticalAlignment="Center"
                             FontWeight="Bold"/>
                         <TextBox
+                            x:Name="settingDescriptionTxt"
                             Grid.Row="0"
                             Grid.Column="1"
                             Text=""
                             MinWidth="100"
                             FontWeight="Bold"
+                            VerticalAlignment="Center"
                             Margin="10,0,0,0"/>
+                        
                         <TextBlock
                             Grid.Row="1"
                             Grid.Column="0"
-                            Text="Screensaver Timeout(sSeconds):"
+                            Text="Screensaver Timeout(Seconds):"
                             FontWeight="Bold"/>
                         <TextBox
-                            Grid.Row="0"
+                            x:Name="screensaverTimeoutTxt"
+                            Grid.Row="1"
                             Grid.Column="1"
                             Text=""
                             MinWidth="100"
                             FontWeight="Bold"
-                            Margin="10,0,0,0"/>
+                            Margin="10,0,0,5"/>
+                        
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Text="Pop-Up Timeout(Seconds):"
+                            FontWeight="Bold"/>
+                        <TextBox
+                            x:Name="popupTimeoutTxt"
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Text=""
+                            MinWidth="100"
+                            FontWeight="Bold"
+                            Margin="10,0,0,5"/>
+
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Text="Desktop Timeout(Seconds):"
+                            FontWeight="Bold"/>
+                        <TextBox
+                            x:Name="desktopTimeoutTxt"
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Text=""
+                            MinWidth="100"
+                            FontWeight="Bold"
+                            Margin="10,0,0,5"/>
+
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            Text="Ticker Timeout(Seconds):"
+                            FontWeight="Bold"/>
+                        <TextBox
+                            x:Name="tickerTimeoutTxt"
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            Text=""
+                            MinWidth="100"
+                            FontWeight="Bold"
+                            Margin="10,0,0,4"/>
+
+                        <TextBlock
+                            Grid.Row="5"
+                            Grid.Column="0"
+                            Text="Sync Timeout(Seconds):"
+                            FontWeight="Bold"/>
+                        <TextBox
+                            x:Name="syncTimeoutTxt"
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            Text=""
+                            MinWidth="100"
+                            FontWeight="Bold"
+                            Margin="10,0,0,5"/>
                     </Grid>
                 </StackPanel>
+                <StackPanel
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="0,-5,0,10">
                 <Button 
                     x:Name="SaveUserSetting"
-                    Content="New User Setting"
-                    Width="150"
+                    Content="Save"
+                    Width="120"
                     Height="30"
-                    Margin="0,-15,0,0"/>
+                    Margin="0,0,0,0" Click="SaveUserSetting_Click"/>
                 <Button 
                     x:Name="DeleteUserSetting"
-                    Content="Delete User Setting"
-                    Width="150"
+                    Content="Delete"
+                    Width="120"
                     Height="30"
-                    Margin="0,-15,0,0"/>
+                    Margin="15,0,0,0" Click="DeleteUserSetting_Click"/>
+                <Button 
+                    x:Name="ClearUserSetting"
+                    Content="Clear"
+                    Width="120"
+                    Height="30"
+                    Margin="15,0,0,0" Click="ClearUserSetting_Click"/>
+                </StackPanel>
             </StackPanel>
         </Border>
     </Grid>

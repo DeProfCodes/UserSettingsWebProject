@@ -145,7 +145,7 @@ namespace UserSettingsWebApi.Controllers
 
                 if (success)
                 {
-                    return Ok("User setting was updated successfully");
+                    return Ok("User setting was deleted successfully");
                 }
                 else
                 {
